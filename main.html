@@ -1,7 +1,61 @@
 <script src="https://npmcdn.com/pdfjs-dist/build/pdf.js"></script>
 
 <script type="module" >
-    import { PropertyItem } from './propertyitem.js';
+    class PropertyItem {
+        // propertyinfo contains uic, item, model, sn, location, quantity, date, and notes
+        constructor(uic, lin, nsn, nomenclature, ui, oh_qty, sn, date_seen, notes, monthly_cyclic) {
+            this.uic = uic;
+            this.lin = lin;
+            this.nsn = nsn;
+            this.nomenclature = nomenclature;
+            this.ui = ui;
+            this.oh_qty = oh_qty;
+            this.sn = sn;
+            this.date_seen = date_seen;
+            this.notes = notes;
+            this.monthly_cyclic = monthly_cyclic;
+        }
+
+        displaySingleSnItems() {
+            var singleSnOut = {};
+            singleSnOut.count = this.sn.length;
+            singleSnOut.items = [];
+            
+            // if the SN array length is 0, then output the item
+            if (this.sn.length == 0) {
+                singleSnOut.count = 1;
+                singleSnOut.items.push(new PropertyItem(
+                    this.uic,
+                    this.lin,
+                    this.nsn,
+                    this.nomenclature,
+                    this.ui,
+                    this.oh_qty,
+                    "",
+                    "",
+                    "",
+                    "",
+                ))
+                return singleSnOut;
+            }
+
+            for (let index = 0; index < this.sn.length; index++) {
+                singleSnOut.items.push(new PropertyItem(
+                    this.uic,
+                    this.lin,
+                    this.nsn,
+                    this.nomenclature,
+                    this.ui,
+                    1,
+                    this.sn[index],
+                    "",
+                    "",
+                    "",
+                ))
+            }
+            return singleSnOut;
+        }
+    }
 
     function separateByMPO(textArray) {
         
@@ -152,8 +206,8 @@
         const items = jsonIn.items
         const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
         const header = Object.keys(items[0])
-        let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('|'))
-        csv.unshift(header.join('|'))
+        let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+        csv.unshift(header.join(','))
         csv = csv.join('\r\n')
         return csv;
     }
@@ -214,7 +268,7 @@
 
                     // remove double quotes and whitespace before and after text
                     var pageTextTrim = allPageTextItems.map(function(propItem) {
-                        return propItem.str.replace(/"/g,'').trim();
+                        return propItem.str.replace(/("|,)/g,'').trim();
                     });
 
                     // remove blank lines from page text
