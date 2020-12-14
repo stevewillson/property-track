@@ -1,6 +1,7 @@
 import React from 'react';
 import * as pdfjsLib from 'pdfjs-dist/webpack';
 import { processShr } from './helperFunctions';
+import XLSX from 'xlsx';
 
 const ProcessFile = () => {
 
@@ -8,11 +9,9 @@ const ProcessFile = () => {
     try {
       const importFile = document.getElementById("importDataFile").files[0];
       const fileContents = await readFile(importFile);
-      
       parsePDF(fileContents).then(pdfData => {
-        debugger
-        let csvData = processShr(pdfData);
-        exportData(csvData);
+        let jsonData = processShr(pdfData);
+        exportToXlsx(jsonData["items"], 'property_track.xlsx');
       });
       
     } catch (e) {
@@ -71,20 +70,15 @@ const ProcessFile = () => {
     });
   }
 
-  const exportData = (data) => {
-    const outData = JSON.stringify(data);
-    //Download the file as a JSON formatted text file
-    var downloadLink = document.createElement("a");
-    var blob = new Blob(["\ufeff", outData]);
-    var url = URL.createObjectURL(blob);
-    downloadLink.href = url;
-    const outFileName = 'property_track_output.csv'
-    downloadLink.download = outFileName;  //Name the file here
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  }
+  const exportToXlsx = (content, fileName) => {
+    /* add to workbook */
+    let wb = XLSX.utils.book_new();      
+    let ws = XLSX.utils.json_to_sheet(content)
+    XLSX.utils.book_append_sheet(wb, ws, 'Property Tracker');
 
+    /* write workbook */
+    XLSX.writeFile(wb, fileName);
+  };
 
   return (
     <button onClick={() => processData()}>Process PDF</button>

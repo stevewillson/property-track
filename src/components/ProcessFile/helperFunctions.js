@@ -197,17 +197,6 @@ function addCyclicDates(jsonIn) {
   return jsonIn;
 }
 
-function jsonToCsv(jsonIn) {
-  // convert the json object to a CSV format, use '|' as the separator
-  const items = jsonIn.items
-  const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-  const header = Object.keys(items[0])
-  let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
-  csv.unshift(header.join(','))
-  csv = csv.join('\r\n')
-  return csv;
-}
-
 export const processShr = (pdfData) => {
   // extract the UIC from the text
   var uicIndex = pdfData.indexOf("UIC:");
@@ -259,9 +248,6 @@ export const processShr = (pdfData) => {
 
   // iterate through the items of the singlePropItems jsonObject
   // add 'monthly_cyclic' information
-
   var singlePropItemsCyclic = addCyclicDates(singlePropItems);
-
-  var csvData = jsonToCsv(singlePropItemsCyclic);
-  return csvData;
+  return singlePropItemsCyclic;
 }

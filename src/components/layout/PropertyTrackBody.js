@@ -2,7 +2,7 @@ import React from 'react';
 import '../../assets/App.css';
 import ProcessFile from '../ProcessFile/ProcessFile';
 
-const header = () => {
+const PropertyTrackBody = () => {
 
   return (
     <React.Fragment>
@@ -21,4 +21,4 @@ const header = () => {
   );
 };
 
-export default header;
+export default PropertyTrackBody;
