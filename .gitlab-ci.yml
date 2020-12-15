@@ -10,19 +10,17 @@ build_property_track:
     - echo "Installing dependencies"
     - npm install
     - echo "Building the app"
-    - npm run build
-    - echo "Generating single file at ./build/"
-    - npx gulp
+    - npm run build:react
     - echo "Configuring ssh key for deployment"
     - echo "$SSH_DEPLOY_KEY" > "$(pwd)/ssh_key"
     - chmod 400 $(pwd)/ssh_key
     - echo "Copying index.html to remote server"
-    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./build/index.html gitlab@willson.tk:/var/www/html/property-track/index.html
+    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./build/* gitlab@willson.tk:/var/www/html/property-track/
   only:
   - master
   artifacts:
     paths:
-    - ./build/index.html
+    - ./build/
     expire_in: 1 week
 
 build_dev_property_track:
@@ -31,17 +29,15 @@ build_dev_property_track:
     - echo "Installing dependencies"
     - npm install
     - echo "Building the app"
-    - npm run build
-    - echo "Generating single file at ./build/"
-    - npx gulp
+    - npm run build:react
     - echo "Configuring ssh key for deployment"
     - echo "$SSH_DEPLOY_KEY" > "$(pwd)/ssh_key"
     - chmod 400 $(pwd)/ssh_key
     - echo "Copying index.html to remote server"
-    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./build/index.html gitlab@willson.tk:/var/www/html/property-track/dev/index.html
+    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./build/* gitlab@willson.tk:/var/www/html/property-track/dev/
   only:
   - devel
   artifacts:
     paths:
-    - ./build/index.html
+    - ./build/
     expire_in: 1 week
