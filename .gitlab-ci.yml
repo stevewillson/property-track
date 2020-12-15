@@ -1,0 +1,43 @@
+default:
+  image: node:lts
+
+stages:
+  - build
+
+build_property_track:
+  stage: build
+  script:
+    - echo "Installing dependencies"
+    - npm install
+    - echo "Building the app"
+    - npm run build:react
+    - echo "Configuring ssh key for deployment"
+    - echo "$SSH_DEPLOY_KEY" > "$(pwd)/ssh_key"
+    - chmod 400 $(pwd)/ssh_key
+    - echo "Copying index.html to remote server"
+    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./build/* gitlab@willson.tk:/var/www/html/property-track/
+  only:
+  - master
+  artifacts:
+    paths:
+    - ./build/
+    expire_in: 1 week
+
+build_dev_property_track:
+  stage: build
+  script:
+    - echo "Installing dependencies"
+    - npm install
+    - echo "Building the app"
+    - npm run build:react
+    - echo "Configuring ssh key for deployment"
+    - echo "$SSH_DEPLOY_KEY" > "$(pwd)/ssh_key"
+    - chmod 400 $(pwd)/ssh_key
+    - echo "Copying index.html to remote server"
+    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./build/* gitlab@willson.tk:/var/www/html/property-track/dev/
+  only:
+  - devel
+  artifacts:
+    paths:
+    - ./build/
+    expire_in: 1 week
