@@ -2,7 +2,7 @@
   "name": "property-track",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://willson.tk/property-track/dev/",
+  "homepage": "https://willson.tk/property-track/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
