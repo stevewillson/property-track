@@ -15,7 +15,7 @@ build_property_track:
     - echo "$SSH_DEPLOY_KEY" > "$(pwd)/ssh_key"
     - chmod 400 $(pwd)/ssh_key
     - echo "Copying index.html to remote server"
-    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./build/* gitlab@willson.tk:/var/www/html/property-track/
+    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./build/ gitlab@willson.tk:/var/www/html/property-track/
   only:
   - master
   artifacts:
@@ -34,7 +34,7 @@ build_dev_property_track:
     - echo "$SSH_DEPLOY_KEY" > "$(pwd)/ssh_key"
     - chmod 400 $(pwd)/ssh_key
     - echo "Copying index.html to remote server"
-    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./build/* gitlab@willson.tk:/var/www/html/property-track/dev/
+    - scp -i $(pwd)/ssh_key -P 6789 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./build/ gitlab@willson.tk:/var/www/html/property-track/dev/
   only:
   - devel
   artifacts:
