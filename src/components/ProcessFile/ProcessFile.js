@@ -8,26 +8,47 @@ const ProcessFile = () => {
 
   const processData = async () => {
     try {
-      const importFile = document.getElementById("importDataFile").files[0];
-      const fileContents = await readFile(importFile);
+      // use the single button for choosing a file and then processing the file
+      // the file chooser is marked as 'display: none' on the parent react component
+      var input = document.getElementById("importDataFile");
+      input.onchange = async function() {
+        const importFile = document.getElementById("importDataFile").files[0];
+        const fileContents = await readFile(importFile);
 
-      // try to read the contents of the file
-      const pdfData = await parsePDF(fileContents);
+        // try to read the contents of the file
+        const pdfData = await parsePDF(fileContents);
 
-      let jsonData = '';
-      let textContent = pdfData.textContent;
-      let annotText = pdfData.annotContent;
-      // check to see if the parsed PDF text includes 'Sub Hand Receipt'
-      if (textContent.includes('Sub Hand Receipt')){
-        jsonData = processShr(textContent);
-        exportToXlsx(jsonData.items, 'property_track.xlsx');
-      // check to see if the parsed PDF text includes 'Primary Hand Receipt'
-      } else if (textContent.includes('Primary Hand Receipt')) {
-          // also get the annotations for the pdf
-
-          jsonData = processPhr(textContent, annotText);
+        let jsonData = '';
+        const textContent = pdfData.textContent;
+        const annotText = pdfData.annotContent;
+        // check to see if the parsed PDF text includes 'Sub Hand Receipt'
+        if (textContent.includes('Sub Hand Receipt')){
+          jsonData = processShr(textContent);
           exportToXlsx(jsonData.items, 'property_track.xlsx');
-      }      
+        // check to see if the parsed PDF text includes 'Primary Hand Receipt'
+        } else if (textContent.includes('Primary Hand Receipt')) {
+            // also get the annotations for the pdf
+
+            // the processPhr function will output a JSON object
+            // count: number
+            // items: [Array of PropertyItems]
+            // Property Item: {
+            // date_seen: ""
+            // lin: "05004N"
+            // monthly_cyclic: "Jan"
+            // nomenclature: "ROUTER: CISCO 2911 VPN ISM MOD HSEC BUND"
+            // notes: ""
+            // nsn: "702501C925893"
+            // oh_qty: "1"
+            // sn: ""
+            // ui: "EA"
+            // uic: "W0ASAA"
+            // }
+            jsonData = processPhr(textContent, annotText);
+            exportToXlsx(jsonData.items, 'property_track.xlsx');
+        }      
+      }
+      input.click();
     } catch (e) {
       console.log(e.message);
     }
@@ -108,7 +129,7 @@ const ProcessFile = () => {
   };
 
   return (
-    <button onClick={() => processData()}>Process PDF</button>
+    <button onClick={() => processData()}>Select and Process PDF</button>
   );
 };
 
