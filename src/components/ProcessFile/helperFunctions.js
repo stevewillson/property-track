@@ -219,30 +219,44 @@ function separateShrByNSN(mpoElement) {
 
 function addCyclicDates(jsonIn) {        
   // reverse order of the cyclic numbers to inventory per month
+  // var cyclicNumbers = [
+  //   "S60290", 
+  //   "S05003", 
+  //   "N00000", 
+  //   "G00000", 
+  //   "B67840", 
+  //   "70224N", 
+  //   "70223N", 
+  //   "70210N", 
+  //   "70209N",
+  //   "000000",
+  // ];
+
+  // var months = [
+  //   "Oct",
+  //   "Sep",
+  //   "Aug",
+  //   "Jul",
+  //   "Jun",
+  //   "May",
+  //   "Apr",
+  //   "Mar",
+  //   "Feb",
+  //   "Jan",   
+  // ];
+  // updated for CY21
   var cyclicNumbers = [
-    "S60290", 
-    "S05003", 
-    "N00000", 
-    "G00000", 
+    "S05002", 
     "B67840", 
-    "70224N", 
-    "70223N", 
-    "70210N", 
-    "70209N",
-    "000000",
+    "70211N", 
+    "05003N",
   ];
 
   var months = [
     "Oct",
-    "Sep",
-    "Aug",
     "Jul",
-    "Jun",
-    "May",
     "Apr",
-    "Mar",
-    "Feb",
-    "Jan",   
+    "Jan",
   ];
 
   // iterate through the items in the jsonIn array
