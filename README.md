@@ -4,7 +4,7 @@ Property tracker generator takes a GCSS-A generated hand receipt and transforms 
 
 ## Usage
 
-Browse to a location where `property-track` is desployed (for example `https://willson.tk/property-track/`) and select a GCSS-A hand receipt. The property tracker will output an Excel file with property split up in rows.
+Browse to a location where `property-track` is desployed (for example `https://willson.ga/property-track/`) and select a GCSS-A hand receipt. The property tracker will output an Excel file with property split up in rows.
 
 ## Local Installation
 
